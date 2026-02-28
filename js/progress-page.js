@@ -50,4 +50,29 @@
     window.LEVELS = levels;
     render(window.ProgressState.get(), levels);
   });
+
+  // Reset progress
+  var btnReset   = document.getElementById('btnResetProgress');
+  var modal      = document.getElementById('resetModal');
+  var btnConfirm = document.getElementById('btnResetConfirm');
+  var btnCancel  = document.getElementById('btnResetCancel');
+
+  if (btnReset) {
+    btnReset.addEventListener('click', function() {
+      modal.hidden = false;
+      modal.style.display = 'flex';
+    });
+  }
+  if (btnCancel) {
+    btnCancel.addEventListener('click', function() {
+      modal.hidden = true;
+      modal.style.display = 'none';
+    });
+  }
+  if (btnConfirm) {
+    btnConfirm.addEventListener('click', function() {
+      localStorage.removeItem('stroika_progress');
+      location.href = 'index.html';
+    });
+  }
 })();

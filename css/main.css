@@ -471,6 +471,31 @@ body {
   border-color: #1e6b2e;
 }
 
+/* ─── Reset progress ────────────────────────────────────────── */
+.reset-section {
+  text-align: center;
+  margin: 1.5rem 0 2rem;
+}
+
+.btn-reset-progress {
+  background: transparent;
+  color: #b0444a;
+  border: 2px solid #e0b0b3;
+  border-radius: 12px;
+  padding: 0.6rem 1.4rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.btn-reset-progress:hover {
+  background: #f44336;
+  color: #fff;
+  border-color: #f44336;
+}
+
 /* ─── Camera controls overlay ───────────────────────────────── */
 .canvas-wrap {
   position: relative;

@@ -36,7 +36,25 @@
       <p class="building-hint">Каждый пройденный уровень — новый этаж.</p>
       <div class="building-visual" id="buildingVisual"></div>
     </section>
+
+    <section class="reset-section">
+      <button type="button" class="btn btn-reset-progress" id="btnResetProgress">
+        🗑 Сбросить прогресс
+      </button>
+    </section>
   </main>
+
+  <!-- Reset confirmation modal -->
+  <div class="modal" id="resetModal" hidden style="display:none">
+    <div class="modal-content">
+      <h2>Сбросить прогресс?</h2>
+      <p style="color:var(--text-muted)">Все очки и пройденные уровни будут удалены. Это действие нельзя отменить.</p>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-primary" id="btnResetConfirm">Да, сбросить</button>
+        <button type="button" class="btn btn-secondary" id="btnResetCancel">Отмена</button>
+      </div>
+    </div>
+  </div>
 
   <script src="js/levels.js"></script>
   <script src="js/progress.js"></script>
