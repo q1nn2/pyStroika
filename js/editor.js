@@ -55,7 +55,7 @@
         btnTheoryToggle.textContent = '📖 Теория (нажми, чтобы открыть)';
         btnTheoryToggle.onclick = function() {
           var open = !theoryContent.hidden;
-          theoryContent.hidden = !open;
+          theoryContent.hidden = open;
           btnTheoryToggle.textContent = open
             ? '📖 Теория (нажми, чтобы открыть)'
             : '📖 Теория (нажми, чтобы закрыть)';
