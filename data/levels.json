@@ -7,7 +7,7 @@
     "theory": "Кран управляется командами Python!\n\nplace() — кладёт кирпич прямо перед краном.\n\nКран смотрит в направлении стрелки. Жёлтый контур показывает куда положить кирпич.",
     "description": "Положи кирпич на отмеченное место (жёлтый контур). Кран стоит рядом и смотрит на нужную клетку. Напиши одну команду place().",
     "example": "place()",
-    "starterCode": "# Положи кирпич:\nplace()\n",
+    "starterCode": "# Напиши код здесь\n",
     "hints": [
       "place() ставит кирпич перед краном",
       "Просто напиши place() и нажми «Запустить»",
@@ -30,7 +30,7 @@
     "theory": "Программа выполняет команды по порядку, одну за другой.\n\nmove() — двигает кран вперёд на 1 шаг.\nplace() — кладёт кирпич перед краном.\n\nЧтобы построить ряд, чередуй движение и укладку.",
     "description": "Построй ряд из 3 кирпичей на жёлтых клетках. Используй place() и move().",
     "example": "place()\nmove()\nplace()\nmove()\nplace()",
-    "starterCode": "# Построй ряд из 3 кирпичей:\nplace()\nmove()\n",
+    "starterCode": "# Напиши код здесь\n",
     "hints": [
       "place() — положи кирпич, move() — двигайся вперёд",
       "Чередуй: place(), move(), place(), move(), place()",
@@ -53,7 +53,7 @@
     "theory": "Цикл for повторяет действия несколько раз.\n\nfor i in range(5):\n    place()\n    move()\n\nВот так кран положит 5 кирпичей подряд!",
     "description": "Используй цикл for i in range(5): чтобы положить 5 кирпичей в ряд. Между кирпичами используй move(), но не после последнего!",
     "example": "for i in range(5):\n    place()\n    if i < 4:\n        move()",
-    "starterCode": "for i in range(5):\n    place()\n    if i < 4:\n        move()\n",
+    "starterCode": "# Напиши код здесь\n",
     "hints": [
       "for i in range(5): выполнит код 5 раз",
       "Внутри цикла: place() чтобы положить кирпич",
@@ -79,7 +79,7 @@
     "theory": "Переменная — это коробка с именем.\n\nn = 4 означает: запомни число 4 под именем n.\nПотом: for i in range(n): — повтори n раз.",
     "description": "Задай переменную n = 4. Используй её в цикле for i in range(n): чтобы положить n кирпичей в ряд.",
     "example": "n = 4\nfor i in range(n):\n    place()\n    if i < n - 1:\n        move()",
-    "starterCode": "n = 4\nfor i in range(n):\n    place()\n    if i < n - 1:\n        move()\n",
+    "starterCode": "# Напиши код здесь\n",
     "hints": [
       "Задай n = 4, потом for i in range(n):",
       "Внутри цикла: place() и move() (кроме последнего)",
@@ -105,7 +105,7 @@
     "theory": "if (если) проверяет условие.\n\nlook() возвращает что стоит перед краном:\n'stone' — камень\n'brick' — кирпич\n'empty' — пусто\n'wall' — граница поля\n\nЕсли впереди камень — объедь его!",
     "description": "На пути стоят каменные блоки. Используй look() чтобы проверить путь и объехать препятствие, затем положи кирпич на цель.",
     "example": "if look() == 'stone':\n    turn_right()\n    move()\n    turn_left()\nmove()\nmove()\nplace()",
-    "starterCode": "if look() == 'stone':\n    turn_right()\n    move()\n    turn_left()\nmove()\nmove()\nplace()\n",
+    "starterCode": "# Напиши код здесь\n",
     "hints": [
       "look() возвращает строку: 'stone', 'brick', 'empty', 'wall'",
       "Если впереди камень — turn_right(), move(), turn_left() — объезд",
@@ -131,7 +131,7 @@
     "theory": "Функция — набор команд с именем.\n\ndef build_row(n):\n    for i in range(n):\n        place()\n        if i < n-1:\n            move()\n\nbuild_row(3) — вызов функции!",
     "description": "Функция build_row(n) уже есть в коде. Вызови её дважды чтобы построить 2 параллельных ряда из 4 кирпичей.",
     "example": "def build_row(n):\n    for i in range(n):\n        place()\n        if i < n - 1:\n            move()\n\nbuild_row(4)\nturn_left()\nturn_left()\nfor i in range(3):\n    move()\nturn_left()\nturn_left()\nbuild_row(4)",
-    "starterCode": "def build_row(n):\n    for i in range(n):\n        place()\n        if i < n - 1:\n            move()\n\nbuild_row(4)\nturn_left()\nturn_left()\nfor i in range(3):\n    move()\nturn_left()\nturn_left()\nbuild_row(4)\n",
+    "starterCode": "def build_row(n):\n    for i in range(n):\n        place()\n        if i < n - 1:\n            move()\n\n# Вызови build_row() дважды!\n",
     "hints": [
       "Функция build_row(n) укладывает n кирпичей в ряд",
       "После первого ряда: turn_left() дважды — это разворот",
@@ -157,7 +157,7 @@
     "theory": "Ты умеешь всё: команды, переменные, циклы, условия и функции!\n\nplace_block('slab') — кладёт плиту\nplace_block('brick') — кладёт кирпич\nplace_block('wood') — кладёт дерево\n\nПоложи плиты на пол!",
     "description": "Построй пол 3×3 из плит. Используй вложенные циклы и place_block('slab'). Кран стоит в углу и смотрит на восток.",
     "example": "def build_floor(size):\n    for row in range(size):\n        for col in range(size):\n            place_block('slab')\n            if col < size - 1:\n                move()\n        if row < size - 1:\n            turn_right()\n            move()\n            turn_right()\n            for k in range(size - 1):\n                move()\n            turn_right()\n            move()\n            turn_right()\n\nbuild_floor(3)",
-    "starterCode": "def build_floor(size):\n    for row in range(size):\n        for col in range(size):\n            place_block('slab')\n            if col < size - 1:\n                move()\n\nbuild_floor(3)\n",
+    "starterCode": "# Напиши код здесь\n",
     "hints": [
       "place_block('slab') кладёт плиту — без ограничений!",
       "Вложенный цикл: внешний — строки, внутренний — столбцы",
