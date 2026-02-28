@@ -221,18 +221,30 @@
     });
   };
 
-  // Draw the crane on the isometric canvas
+  // Draw the crane on the isometric canvas (camera-aware)
   Crane.prototype.draw = function(ctx, ox, oy) {
-    var iso = global.toIso(this.vx, this.vy, 0, ox, oy);
-    var sx = iso.sx, sy = iso.sy;
-    var hw = global.TILE_W / 2, hh = global.TILE_H / 2;
-    var bh = global.BLOCK_H;
+    var camera = (this.world && this.world.camera) || { angle: 0, zoom: 1, offsetX: 0, offsetY: 0 };
+    var zoom = camera.zoom || 1;
+    var rad = (camera.angle || 0) * Math.PI / 180;
 
-    // Body (yellow cube)
+    // Rotate visual position around grid center
+    var cx = this.world ? this.world.gridW / 2 : 4;
+    var cy = this.world ? this.world.gridH / 2 : 4;
+    var dx = this.vx - cx, dy = this.vy - cy;
+    var rx = dx * Math.cos(rad) - dy * Math.sin(rad) + cx;
+    var ry = dx * Math.sin(rad) + dy * Math.cos(rad) + cy;
+
+    var TW = global.TILE_W, TH = global.TILE_H, BH = global.BLOCK_H;
+    var hw = TW / 2 * zoom, hh = TH / 2 * zoom, bh = BH * zoom;
+
+    // Screen position of crane (z=0, sitting on top of ground tile)
+    var sx = (rx - ry) * TW / 2 * zoom + ox;
+    var sy = (rx + ry) * TH / 2 * zoom + oy;
+
     var bodyColors = { top: '#f1c40f', left: '#c39a0e', right: '#d4ac0e' };
+    var bodyScale = 0.7;
+    var s_hw = hw * bodyScale, s_hh = hh * bodyScale, s_bh = bh * bodyScale;
     var bx = sx, by = sy - bh * 0.6;
-    var scale = 0.7;
-    var s_hw = hw * scale, s_hh = hh * scale, s_bh = bh * scale;
 
     // top face
     ctx.beginPath();
@@ -264,32 +276,35 @@
     ctx.fillStyle = bodyColors.right; ctx.fill();
     ctx.strokeStyle = '#999'; ctx.lineWidth = 1; ctx.stroke();
 
-    // Crane arm: vertical pole + horizontal boom
-    var armX = bx, armY = by - s_bh - 4;
+    // Crane arm: vertical pole + boom rotated with camera
+    var poleH = 20 * zoom;
+    var armX = bx, armY = by - s_bh - 4 * zoom;
     ctx.strokeStyle = '#e67e00';
-    ctx.lineWidth = 3;
-    // vertical
-    ctx.beginPath(); ctx.moveTo(armX, armY); ctx.lineTo(armX, armY - 20); ctx.stroke();
-    // boom direction
+    ctx.lineWidth = Math.max(1, 3 * zoom);
+    ctx.beginPath(); ctx.moveTo(armX, armY); ctx.lineTo(armX, armY - poleH); ctx.stroke();
+
+    // boom angle: world direction offset by camera rotation
     var dirAngles = { N: Math.PI * 1.25, E: Math.PI * 1.75, S: Math.PI * 0.25, W: Math.PI * 0.75 };
-    var ang = dirAngles[this.dir] || 0;
-    var boomLen = 18;
+    var ang = (dirAngles[this.dir] || 0) - rad;
+    var boomLen = 18 * zoom;
     var boomEndX = armX + Math.cos(ang) * boomLen;
-    var boomEndY = armY - 20 + Math.sin(ang) * boomLen * 0.5;
-    ctx.beginPath(); ctx.moveTo(armX, armY - 20); ctx.lineTo(boomEndX, boomEndY); ctx.stroke();
+    var boomEndY = armY - poleH + Math.sin(ang) * boomLen * 0.5;
+    ctx.beginPath(); ctx.moveTo(armX, armY - poleH); ctx.lineTo(boomEndX, boomEndY); ctx.stroke();
 
     // hanging cable + carried block indicator
     if (this.carried) {
-      ctx.strokeStyle = '#555'; ctx.lineWidth = 1.5;
-      ctx.beginPath(); ctx.moveTo(boomEndX, boomEndY); ctx.lineTo(boomEndX, boomEndY + 12); ctx.stroke();
+      var cableLen = 12 * zoom;
+      ctx.strokeStyle = '#555'; ctx.lineWidth = Math.max(1, 1.5 * zoom);
+      ctx.beginPath(); ctx.moveTo(boomEndX, boomEndY); ctx.lineTo(boomEndX, boomEndY + cableLen); ctx.stroke();
+      var bw = 10 * zoom, bh2 = 8 * zoom;
       ctx.fillStyle = '#e74c3c';
-      ctx.fillRect(boomEndX - 5, boomEndY + 12, 10, 8);
-      ctx.strokeStyle = '#999'; ctx.lineWidth = 0.5; ctx.strokeRect(boomEndX - 5, boomEndY + 12, 10, 8);
+      ctx.fillRect(boomEndX - bw / 2, boomEndY + cableLen, bw, bh2);
+      ctx.strokeStyle = '#999'; ctx.lineWidth = 0.5; ctx.strokeRect(boomEndX - bw / 2, boomEndY + cableLen, bw, bh2);
     }
 
-    // direction arrow
+    // direction arrow on body
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 10px sans-serif';
+    ctx.font = 'bold ' + Math.max(8, Math.round(10 * zoom)) + 'px sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     var arrowMap = { N: '↑', E: '→', S: '↓', W: '←' };

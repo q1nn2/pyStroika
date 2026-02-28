@@ -27,6 +27,15 @@
       </div>
       <div id="canvasWrap" class="canvas-wrap">
         <canvas id="gameCanvas"></canvas>
+        <!-- Camera controls overlay -->
+        <div class="camera-controls">
+          <button type="button" class="cam-btn" id="btnZoomIn"  title="Приблизить">＋</button>
+          <button type="button" class="cam-btn" id="btnZoomOut" title="Отдалить">－</button>
+          <button type="button" class="cam-btn" id="btnCameraReset" title="Сбросить вид">⌂</button>
+        </div>
+        <div class="camera-hint" id="cameraHint">
+          🖱 Тяни для поворота · ПКМ для панорамы · Скролл для зума
+        </div>
       </div>
       <div class="canvas-legend">
         <span class="legend-item"><span class="swatch swatch-goal"></span>Цель</span>
@@ -116,6 +125,7 @@
   <script src="js/progress.js"></script>
   <script src="js/world.js"></script>
   <script src="js/crane.js"></script>
+  <script src="js/camera-controls.js"></script>
   <script src="js/skulpt-runner.js"></script>
   <script src="js/checker.js"></script>
   <script src="js/editor.js"></script>

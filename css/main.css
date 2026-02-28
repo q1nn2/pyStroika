@@ -470,3 +470,72 @@ body {
   background: repeating-linear-gradient(90deg, var(--building-done), var(--building-done) 8px, #3da852 8px, #3da852 10px);
   border-color: #1e6b2e;
 }
+
+/* ─── Camera controls overlay ───────────────────────────────── */
+.canvas-wrap {
+  position: relative;
+}
+
+.camera-controls {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  z-index: 10;
+}
+
+.cam-btn {
+  width: 32px;
+  height: 32px;
+  background: rgba(15, 30, 46, 0.78);
+  color: #cde;
+  border: 1px solid rgba(100, 160, 220, 0.35);
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, transform 0.1s;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.cam-btn:hover {
+  background: rgba(247, 147, 30, 0.85);
+  color: #fff;
+  transform: scale(1.08);
+}
+
+.cam-btn:active {
+  transform: scale(0.95);
+}
+
+.camera-hint {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(15, 30, 46, 0.72);
+  color: #aac;
+  font-size: 0.72rem;
+  padding: 4px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 10;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  animation: hintFade 4s ease-out 2s forwards;
+  opacity: 1;
+}
+
+@keyframes hintFade {
+  0%   { opacity: 1; }
+  80%  { opacity: 1; }
+  100% { opacity: 0; }
+}

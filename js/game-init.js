@@ -33,6 +33,11 @@
     window.GameCrane = crane;
     world.startLoop();
 
+    // Attach camera controls
+    if (window.initCameraControls) {
+      window.initCameraControls(canvas, world);
+    }
+
     // update carried indicator in UI
     setInterval(function() {
       var el = document.getElementById('carriedInfo');

@@ -28,44 +28,41 @@
     if (stroke) { ctx.strokeStyle = stroke; ctx.lineWidth = 1; ctx.stroke(); }
   }
 
-  function drawBlock(ctx, x, y, z, type, offsetX, offsetY) {
+  // zoom-aware drawBlock: x,y are already rotated grid coords
+  function drawBlock(ctx, x, y, z, type, offsetX, offsetY, zoom) {
+    zoom = zoom || 1;
     var colors = BLOCK_COLORS[type] || BLOCK_COLORS.brick;
-    var p = toIso(x, y, z, offsetX, offsetY);
-    var hw = TILE_W / 2, hh = TILE_H / 2, bh = BLOCK_H;
-    var tx = p.sx, ty = p.sy;
+    var hw = TILE_W / 2 * zoom;
+    var hh = TILE_H / 2 * zoom;
+    var bh = BLOCK_H * zoom;
+    var tx = (x - y) * TILE_W / 2 * zoom + offsetX;
+    var ty = (x + y) * TILE_H / 2 * zoom - z * BLOCK_H * zoom + offsetY;
 
     if (colors.outline) {
-      // Goal block — draw glowing outline only
       ctx.save();
       ctx.globalAlpha = 0.7 + 0.3 * Math.abs(Math.sin(Date.now() / 400));
-      // top face
       drawBlockFace(ctx, [
-        [tx, ty - bh], [tx + hw, ty - bh + hh], [tx, ty - bh + TILE_H], [tx - hw, ty - bh + hh]
+        [tx, ty - bh], [tx + hw, ty - bh + hh], [tx, ty - bh + hh * 2], [tx - hw, ty - bh + hh]
       ], colors.top, '#f1c40f');
-      // left face
       drawBlockFace(ctx, [
-        [tx - hw, ty - bh + hh], [tx, ty - bh + TILE_H], [tx, ty + hh], [tx - hw, ty]
+        [tx - hw, ty - bh + hh], [tx, ty - bh + hh * 2], [tx, ty + hh], [tx - hw, ty]
       ], colors.left, '#f1c40f');
-      // right face
       drawBlockFace(ctx, [
-        [tx, ty - bh + TILE_H], [tx + hw, ty - bh + hh], [tx + hw, ty], [tx, ty + hh]
+        [tx, ty - bh + hh * 2], [tx + hw, ty - bh + hh], [tx + hw, ty], [tx, ty + hh]
       ], colors.right, '#f1c40f');
       ctx.restore();
       return;
     }
 
     var stroke = 'rgba(0,0,0,0.18)';
-    // top face
     drawBlockFace(ctx, [
-      [tx, ty - bh], [tx + hw, ty - bh + hh], [tx, ty - bh + TILE_H], [tx - hw, ty - bh + hh]
+      [tx, ty - bh], [tx + hw, ty - bh + hh], [tx, ty - bh + hh * 2], [tx - hw, ty - bh + hh]
     ], colors.top, stroke);
-    // left face
     drawBlockFace(ctx, [
-      [tx - hw, ty - bh + hh], [tx, ty - bh + TILE_H], [tx, ty + hh], [tx - hw, ty]
+      [tx - hw, ty - bh + hh], [tx, ty - bh + hh * 2], [tx, ty + hh], [tx - hw, ty]
     ], colors.left, stroke);
-    // right face
     drawBlockFace(ctx, [
-      [tx, ty - bh + TILE_H], [tx + hw, ty - bh + hh], [tx + hw, ty], [tx, ty + hh]
+      [tx, ty - bh + hh * 2], [tx + hw, ty - bh + hh], [tx + hw, ty], [tx, ty + hh]
     ], colors.right, stroke);
   }
 
@@ -79,6 +76,8 @@
     this.crane = null;
     this._animFrame = null;
     this._goalPulse = 0;
+    // Camera state for smooth controls
+    this.camera = { angle: 0, zoom: 1.0, offsetX: 0, offsetY: 0 };
     var self = this;
     this._loop = function() {
       self._goalPulse = Date.now();
@@ -86,6 +85,18 @@
       self._animFrame = requestAnimationFrame(self._loop);
     };
   }
+
+  // Rotate grid coords (x, y) around grid center by camera.angle
+  World.prototype.projectXY = function(x, y) {
+    var cx = this.gridW / 2;
+    var cy = this.gridH / 2;
+    var rad = this.camera.angle * Math.PI / 180;
+    var dx = x - cx, dy = y - cy;
+    return {
+      rx: dx * Math.cos(rad) - dy * Math.sin(rad) + cx,
+      ry: dx * Math.sin(rad) + dy * Math.cos(rad) + cy
+    };
+  };
 
   World.prototype.init = function(levelWorld) {
     this.blocks = {};
@@ -146,8 +157,8 @@
 
   World.prototype.getOffset = function() {
     var cw = this.canvas.width, ch = this.canvas.height;
-    var ox = cw / 2;
-    var oy = ch / 2 - (this.gridW + this.gridH) * TILE_H / 4 + 60;
+    var ox = cw / 2 + this.camera.offsetX;
+    var oy = ch / 2 - (this.gridW + this.gridH) * TILE_H / 4 + 60 + this.camera.offsetY;
     return { x: ox, y: oy };
   };
 
@@ -165,29 +176,32 @@
 
     var off = this.getOffset();
     var ox = off.x, oy = off.y;
+    var zoom = this.camera.zoom;
+    var self = this;
 
-    // collect all blocks sorted back-to-front (painter's algo)
+    // collect all blocks, rotate coords, sort back-to-front (painter's algo)
     var allBlocks = [];
     for (var key in this.blocks) {
       var parts = key.split(',');
-      allBlocks.push({ x: parseInt(parts[0]), y: parseInt(parts[1]), z: parseInt(parts[2]), type: this.blocks[key] });
+      var bx = parseInt(parts[0]), by = parseInt(parts[1]), bz = parseInt(parts[2]);
+      var proj = self.projectXY(bx, by);
+      allBlocks.push({ rx: proj.rx, ry: proj.ry, z: bz, type: this.blocks[key] });
     }
     allBlocks.sort(function(a, b) {
-      var da = a.x + a.y - a.z * 0.01;
-      var db = b.x + b.y - b.z * 0.01;
-      return da - db;
+      return (a.rx + a.ry - a.z * 0.01) - (b.rx + b.ry - b.z * 0.01);
     });
 
     for (var i = 0; i < allBlocks.length; i++) {
       var b = allBlocks[i];
-      drawBlock(ctx, b.x, b.y, b.z, b.type, ox, oy);
+      drawBlock(ctx, b.rx, b.ry, b.z, b.type, ox, oy, zoom);
     }
 
     // draw goal outlines
     for (var g = 0; g < this.goals.length; g++) {
       var gl = this.goals[g];
       if (!this.getBlock(gl.x, gl.y, gl.z)) {
-        drawBlock(ctx, gl.x, gl.y, gl.z, 'goal', ox, oy);
+        var gp = self.projectXY(gl.x, gl.y);
+        drawBlock(ctx, gp.rx, gp.ry, gl.z, 'goal', ox, oy, zoom);
       }
     }
 
