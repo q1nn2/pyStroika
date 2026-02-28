@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Стройка — учим Python</title>
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body class="page-index">
+  <header class="header">
+    <h1 class="logo">Стройка</h1>
+    <p class="tagline">Строим знания по Python</p>
+    <div class="header-actions">
+      <a href="progress.html" class="btn btn-secondary">Мой прогресс</a>
+    </div>
+  </header>
+
+  <main class="main">
+    <section class="welcome">
+      <div class="welcome-card">
+        <div class="welcome-stats" id="welcomeStats">
+          <span class="stat">Очки: <strong id="totalPoints">0</strong></span>
+          <span class="stat">Уровень: <strong id="currentLevelNum">1</strong></span>
+        </div>
+        <p class="welcome-text">Выбери уровень и выполни задание. Пиши код в редакторе, нажимай «Запустить», затем «Проверить».</p>
+      </div>
+    </section>
+
+    <section class="levels" id="levelsList">
+    </section>
+  </main>
+
+  <script src="js/levels.js"></script>
+  <script src="js/progress.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

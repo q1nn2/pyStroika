@@ -1,0 +1,11 @@
+# Не относящиеся к игре «Стройка»
+create_test_table.py
+paste_ke_data.py
+ke_data.txt
+BUG_REPORTS_MESTO.md
+TEST_RESULTS_MESTO.md
+stellar-burgers-test-checklists.md
+*.pyc
+__pycache__/
+.DS_Store
+Thumbs.db

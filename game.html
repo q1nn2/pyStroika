@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Задание — Стройка</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
+</head>
+<body class="page-game">
+  <header class="header">
+    <a href="index.html" class="btn btn-back">Назад</a>
+    <h1 class="level-title" id="levelTitle">Задание</h1>
+    <a href="progress.html" class="btn btn-secondary">Прогресс</a>
+  </header>
+
+  <main class="main game-main">
+    <section class="task-section">
+      <div class="task-card">
+        <h2>Задание</h2>
+        <p class="task-description" id="taskDescription"></p>
+        <div class="task-example" id="taskExample"></div>
+        <p class="task-topic">Тема: <span id="taskTopic"></span></p>
+      </div>
+    </section>
+
+    <section class="editor-section">
+      <div class="editor-toolbar">
+        <button type="button" class="btn btn-primary" id="btnRun">Запустить</button>
+        <button type="button" class="btn btn-success" id="btnCheck">Проверить</button>
+      </div>
+      <div class="run-stdin-wrap">
+        <label for="runStdin">Ввод для «Запустить» (если в коде есть input(), введи сюда число или текст):</label>
+        <input type="text" id="runStdin" placeholder="Например: 600" class="run-stdin-input">
+      </div>
+      <div id="editorWrap" class="editor-wrap"></div>
+      <div class="output-wrap">
+        <h3>Результат</h3>
+        <pre id="output" class="output"></pre>
+      </div>
+    </section>
+
+    <div class="modal" id="successModal" hidden style="display: none;">
+      <div class="modal-content">
+        <div class="modal-success-icon">✓</div>
+        <h2>Уровень пройден!</h2>
+        <p id="successMessage"></p>
+        <div class="modal-actions">
+          <a href="index.html" class="btn btn-primary">К уровням</a>
+          <a href="progress.html" class="btn btn-secondary">Прогресс</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/python/python.min.js"></script>
+  <script src="js/levels.js"></script>
+  <script src="js/progress.js"></script>
+  <script src="js/runner.js"></script>
+  <script src="js/checker.js"></script>
+  <script src="js/editor.js"></script>
+  <script src="js/game-init.js"></script>
+</body>
+</html>

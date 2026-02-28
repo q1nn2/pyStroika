@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Мой прогресс — Стройка</title>
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body class="page-progress">
+  <header class="header">
+    <a href="index.html" class="btn btn-back">К уровням</a>
+    <h1 class="logo">Мой прогресс</h1>
+  </header>
+
+  <main class="main">
+    <section class="rating-section">
+      <div class="rating-card">
+        <h2>Рейтинг</h2>
+        <div class="rating-value" id="ratingValue">0</div>
+        <p class="rating-label">очков</p>
+      </div>
+    </section>
+
+    <section class="progress-section">
+      <h2>Прогресс обучения</h2>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar" id="progressBar" style="width: 0%"></div>
+      </div>
+      <p class="progress-percent" id="progressPercent">0%</p>
+      <div class="topics-list" id="topicsList"></div>
+    </section>
+
+    <section class="building-section">
+      <h2>Наша стройка</h2>
+      <p class="building-hint">Каждый пройденный уровень — новый этаж.</p>
+      <div class="building-visual" id="buildingVisual"></div>
+    </section>
+  </main>
+
+  <script src="js/levels.js"></script>
+  <script src="js/progress.js"></script>
+  <script src="js/progress-page.js"></script>
+</body>
+</html>
