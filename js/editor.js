@@ -50,13 +50,13 @@
     if (theorySection && level.theory) {
       theorySection.style.display = 'block';
       if (theoryText) theoryText.textContent = level.theory;
-      if (theoryContent) theoryContent.hidden = true;
+      if (theoryContent) theoryContent.style.display = 'none';
       if (btnTheoryToggle) {
         btnTheoryToggle.textContent = '📖 Теория (нажми, чтобы открыть)';
         btnTheoryToggle.onclick = function() {
-          var open = !theoryContent.hidden;
-          theoryContent.hidden = open;
-          btnTheoryToggle.textContent = open
+          var isVisible = theoryContent.style.display !== 'none';
+          theoryContent.style.display = isVisible ? 'none' : 'block';
+          btnTheoryToggle.textContent = isVisible
             ? '📖 Теория (нажми, чтобы открыть)'
             : '📖 Теория (нажми, чтобы закрыть)';
         };
