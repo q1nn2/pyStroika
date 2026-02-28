@@ -19,12 +19,49 @@
     if (modal) { modal.hidden = true; modal.style.display = 'none'; }
     var levelTitle = document.getElementById('levelTitle');
     if (levelTitle) levelTitle.textContent = level.title;
+    var levelIcon = document.getElementById('levelIcon');
+    if (levelIcon) levelIcon.textContent = level.icon || '';
     var taskDesc = document.getElementById('taskDescription');
     if (taskDesc) taskDesc.textContent = level.description;
     var taskEx = document.getElementById('taskExample');
     if (taskEx) taskEx.textContent = level.example || '';
     var taskTopic = document.getElementById('taskTopic');
     if (taskTopic) taskTopic.textContent = level.topic || '';
+    var theorySection = document.getElementById('theorySection');
+    var theoryContent = document.getElementById('theoryContent');
+    var theoryText = document.getElementById('theoryText');
+    var btnTheoryToggle = document.getElementById('btnTheoryToggle');
+    if (theorySection && level.theory) {
+      theorySection.style.display = 'block';
+      if (theoryText) theoryText.textContent = level.theory;
+      if (btnTheoryToggle) btnTheoryToggle.textContent = '📖 Теория (нажми, чтобы открыть)';
+      if (theoryContent) theoryContent.hidden = true;
+      btnTheoryToggle.onclick = function() {
+        var open = !theoryContent.hidden;
+        theoryContent.hidden = !open;
+        btnTheoryToggle.textContent = open ? '📖 Теория (нажми, чтобы открыть)' : '📖 Теория (нажми, чтобы закрыть)';
+      };
+    } else if (theorySection) theorySection.style.display = 'none';
+    var hintOutput = document.getElementById('hintOutput');
+    var btnHint = document.getElementById('btnHint');
+    var hintIndex = 0;
+    if (btnHint && hintOutput) {
+      hintOutput.innerHTML = '';
+      hintIndex = 0;
+      var hints = level.hints || [];
+      btnHint.style.display = hints.length ? '' : 'none';
+      btnHint.disabled = false;
+      btnHint.onclick = function() {
+        if (hintIndex < hints.length) {
+          var p = document.createElement('p');
+          p.className = 'hint-item';
+          p.textContent = (hintIndex + 1) + '. ' + hints[hintIndex];
+          hintOutput.appendChild(p);
+          hintIndex++;
+        }
+        if (hintIndex >= hints.length) btnHint.disabled = true;
+      };
+    }
     initEditor('editorWrap', { initialValue: level.starterCode || '# Напиши код\n' });
     var outputEl = document.getElementById('output');
     function showOutput(text, isError) {

@@ -9,3 +9,4 @@ stellar-burgers-test-checklists.md
 __pycache__/
 .DS_Store
 Thumbs.db
+*.xlsx

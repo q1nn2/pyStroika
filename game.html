@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Задание — Стройка</title>
   <link rel="stylesheet" href="css/main.css">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
 </head>
 <body class="page-game">
@@ -15,12 +16,22 @@
   </header>
 
   <main class="main game-main">
+    <section class="theory-section" id="theorySection">
+      <div class="theory-card">
+        <button type="button" class="btn-theory-toggle" id="btnTheoryToggle">📖 Теория (нажми, чтобы открыть)</button>
+        <div class="theory-content" id="theoryContent" hidden>
+          <p id="theoryText"></p>
+        </div>
+      </div>
+    </section>
     <section class="task-section">
       <div class="task-card">
-        <h2>Задание</h2>
+        <h2><span id="levelIcon"></span> Задание</h2>
         <p class="task-description" id="taskDescription"></p>
         <div class="task-example" id="taskExample"></div>
         <p class="task-topic">Тема: <span id="taskTopic"></span></p>
+        <button type="button" class="btn btn-hint" id="btnHint">💡 Подсказка</button>
+        <div class="hint-output" id="hintOutput"></div>
       </div>
     </section>
 

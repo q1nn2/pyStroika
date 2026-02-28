@@ -22,7 +22,8 @@
       var card = document.createElement('a');
       card.href = unlocked ? 'game.html?id=' + encodeURIComponent(level.id) : '#';
       card.className = 'level-card' + (done ? ' done' : '') + (unlocked ? '' : ' locked');
-      card.innerHTML = '<div class="level-info"><h3>' + escapeHtml(level.title) + '</h3><p>' + escapeHtml(level.topic) + ' · ' + (level.points || 0) + ' очков</p></div><span class="level-badge">' + (done ? 'Пройден' : 'Уровень ' + (i + 1)) + '</span>';
+      var icon = level.icon ? level.icon + ' ' : '';
+      card.innerHTML = '<div class="level-info"><h3>' + icon + escapeHtml(level.title) + '</h3><p>' + escapeHtml(level.topic) + ' · ' + (level.points || 0) + ' очков</p></div><span class="level-badge">' + (done ? '✓ Пройден' : 'Уровень ' + (i + 1)) + '</span>';
       list.appendChild(card);
     }
   }
