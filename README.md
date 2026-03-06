@@ -72,3 +72,45 @@ start-server.bat
 python -m http.server 8000
 # Открыть: http://localhost:8000
 ```
+
+### AI-агент для тестирования (`ai_tester`)
+
+- `ai_tester/` — Python-пакет с AI-агентом для тестовой документации и ручного тестирования:
+  - модели тест-кейсов и чек-листов,
+  - CLI-команды `docs`, `run`, `session`,
+  - интеграция с LLM, Playwright и httpx.
+- `requirements-ai-tester.txt` — зависимости для агента.
+
+#### Установка и запуск агента
+
+1. Установить зависимости:
+
+   ```bash
+   pip install -r requirements-ai-tester.txt
+   ```
+
+2. Запустить CLI (из корня репозитория):
+
+   ```bash
+   python -m ai_tester.cli --help
+   ```
+
+3. Примеры:
+
+   - Сгенерировать тестовую документацию:
+
+     ```bash
+     python -m ai_tester.cli docs "Авторизация" --source feature_auth.txt
+     ```
+
+   - Запустить полу-автоматический прогон сценариев:
+
+     ```bash
+     python -m ai_tester.cli run tests/ai-docs/Авторизация.yaml --env dev
+     ```
+
+   - Открыть интерактивную сессию ручного тестирования:
+
+     ```bash
+     python -m ai_tester.cli session tests/ai-docs/Авторизация.yaml --env dev
+     ```
